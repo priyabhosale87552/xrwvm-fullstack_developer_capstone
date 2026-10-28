@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Car Dealership</title>
+    <!-- Correct CSS link -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f9; color: #333; }
+        nav { background-color: #333; padding: 1rem; color: white; }
+        nav a { color: white; text-decoration: none; margin-right: 20px; font-weight: bold; }
+        nav a.active { color: #ffc107; }
+        .container { max-width: 1100px; margin: 40px auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h1 { color: #222; text-align: center; margin-bottom: 20px; }
+        .intro { text-align: center; margin-bottom: 40px; font-size: 1.1em; color: #555; }
+        .team-grid { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px; }
+        .card { background: #fff; border: 1px solid #ddd; border-radius: 6px; width: 300px; text-align: center; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .card img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 15px; border: 3px solid #007bff; }
+        .card h3 { margin: 10px 0 5px; color: #333; }
+        .card .role { color: #007bff; font-weight: bold; margin-bottom: 10px; }
+        .card p { font-size: 0.9em; color: #666; margin-bottom: 15px; }
+        .card .email { font-size: 0.85em; color: #333; background: #e9ecef; padding: 5px 10px; border-radius: 4px; display: inline-block; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/about" class="active">About Us</a>
+        <a href="/contact">Contact Us</a>
+    </nav>
+
+    <div class="container">
+        <h1>About Our Dealership</h1>
+        <p class="intro">Welcome to Car Dealership Portal, your trusted platform for exploring vehicles, reading verified dealer reviews, and connecting with top-rated automotive professionals.</p>
+
+        <div class="team-grid">
+            <!-- Team Member 1 -->
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb" alt="Bhavesh Belhekar">
+                <h3>Bhavesh Belhekar</h3>
+                <div class="role">Lead Full-Stack Developer</div>
+                <p>Specializing in Django microservices, cloud architecture, and building robust end-to-end web applications.</p>
+                <div class="email">bhavesh.belhekar@dealership.com</div>
+            </div>
+
+            <!-- Team Member 2 -->
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d" alt="Alex Morgan">
+                <h3>Alex Morgan</h3>
+                <div class="role">Frontend Architect</div>
+                <p>Passionate about creating clean, responsive user interfaces using modern JavaScript frameworks and CSS.</p>
+                <div class="email">alex.morgan@dealership.com</div>
+            </div>
+
+            <!-- Team Member 3 -->
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2" alt="Sophia Chen">
+                <h3>Sophia Chen</h3>
+                <div class="role">Database & QA Engineer</div>
+                <p>Ensuring data integrity, secure user authentication workflows, and high-performance backend database queries.</p>
+                <div class="email">sophia.chen@dealership.com</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
