@@ -1,0 +1,38 @@
+curl -X GET http://localhost:3000/fetchDealers
+
+Response:
+[
+  {
+    "id": 1,
+    "city": "El Paso",
+    "state": "Texas",
+    "address": "384 Lambert Parkway",
+    "zip": "79901",
+    "lat": 31.7619,
+    "long": -106.485,
+    "short_name": "Classic Motors",
+    "full_name": "Classic Motors Dealership Inc"
+  },
+  {
+    "id": 2,
+    "city": "Austin",
+    "state": "Texas",
+    "address": "129 Capital Way",
+    "zip": "78701",
+    "lat": 30.2672,
+    "long": -97.7431,
+    "short_name": "Lone Star Auto",
+    "full_name": "Lone Star Auto Group"
+  },
+  {
+    "id": 3,
+    "city": "Wichita",
+    "state": "Kansas",
+    "address": "456 Sunflower St",
+    "zip": "67202",
+    "lat": 37.6872,
+    "long": -97.3301,
+    "short_name": "Jayhawk Motors",
+    "full_name": "Jayhawk Car Dealership"
+  }
+]

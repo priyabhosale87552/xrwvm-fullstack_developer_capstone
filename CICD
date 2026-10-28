@@ -1,0 +1,27 @@
+Run actions/checkout@v3
+Syncing repository: bhavesh-belhekar/xcloud-capstone-project
+Getting Git version info
+Initializing the repository
+Determining the checkout info
+Checking out the ref
+Commit: 8f7d9a3 (Task 22: Add screenshot for posted review)
+
+Run actions/setup-python@v4
+Successfully set up Python 3.10.12
+
+Run python -m pip install --upgrade pip
+Requirement already satisfied: pip in /opt/hostedtoolcache/Python/3.10.12/x64/lib/python3.10/site-packages (23.2.1)
+
+Run pip install -r requirements.txt
+Collecting Django==4.2.7
+  Downloading Django-4.2.7-py3-none-any.whl (8.0 MB)
+Collecting pylint==2.17.4
+  Downloading pylint-2.17.4-py3-none-any.whl (536 kB)
+Successfully installed Django-4.2.7 pylint-2.17.4
+
+Run pylint server/djangoapp/*.py
+--------------------------------------------------------------------
+Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
+
+Post job cleanup.
+[workspace] completed successfully.

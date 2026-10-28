@@ -1,0 +1,17 @@
+curl -X GET http://localhost:3000/fetchReviews/dealer/1
+
+Response:
+[
+  {
+    "id": 1,
+    "name": "Upkar Singh",
+    "dealership": 1,
+    "review": "Great customer service and very smooth buying experience. Highly recommend!",
+    "purchase": true,
+    "purchase_date": "06/04/2025",
+    "car_make": "Audi",
+    "car_model": "A4",
+    "car_year": 2023,
+    "sentiment": "positive"
+  }
+]

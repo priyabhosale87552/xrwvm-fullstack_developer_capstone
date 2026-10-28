@@ -1,0 +1,29 @@
+curl -X GET http://localhost:3000/get_cars
+
+Response:
+[
+  {
+    "CarMake": "Toyota",
+    "CarModel": "Camry"
+  },
+  {
+    "CarMake": "Toyota",
+    "CarModel": "Corolla"
+  },
+  {
+    "CarMake": "Honda",
+    "CarModel": "Civic"
+  },
+  {
+    "CarMake": "Honda",
+    "CarModel": "Accord"
+  },
+  {
+    "CarMake": "Ford",
+    "CarModel": "Mustang"
+  },
+  {
+    "CarMake": "Audi",
+    "CarModel": "A4"
+  }
+]

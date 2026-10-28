@@ -1,0 +1,16 @@
+curl -X GET http://localhost:3000/fetchDealers/Kansas
+
+Response:
+[
+  {
+    "id": 3,
+    "city": "Wichita",
+    "state": "Kansas",
+    "address": "456 Sunflower St",
+    "zip": "67202",
+    "lat": 37.6872,
+    "long": -97.3301,
+    "short_name": "Jayhawk Motors",
+    "full_name": "Jayhawk Car Dealership"
+  }
+]
