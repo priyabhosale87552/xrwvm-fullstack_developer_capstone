@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sign up | Dealership Directory</title>
+    <style>
+        :root { font-family: Arial, Helvetica, sans-serif; color: #172033; background: #f3f6fb; }
+        * { box-sizing: border-box; }
+        body { margin: 0; }
+        header { padding: 1.1rem max(1.5rem, calc((100% - 560px) / 2)); background: #142a4f; }
+        header a { color: white; font-weight: 700; text-decoration: none; }
+        main { width: min(560px, calc(100% - 2rem)); margin: 2rem auto; padding: 1.5rem; border: 1px solid #e1e7f0; border-radius: .8rem; background: white; box-shadow: 0 8px 22px rgba(20, 42, 79, .08); }
+        h1 { margin-top: 0; }
+        form { display: grid; gap: .9rem; }
+        .field { display: grid; gap: .35rem; }
+        label { font-weight: 700; }
+        input { width: 100%; padding: .7rem; border: 1px solid #cbd5e1; border-radius: .4rem; font: inherit; }
+        button { padding: .8rem 1rem; border: 0; border-radius: .4rem; background: #2563eb; color: white; font: inherit; font-weight: 700; cursor: pointer; }
+        .errorlist, .help { margin: .2rem 0 0; color: #64748b; font-size: .9rem; }
+        .errorlist { color: #b91c1c; }
+    </style>
+</head>
+<body>
+    <header><a href="{% url 'home' %}">Dealership Directory</a></header>
+    <main>
+        <h1>Sign up</h1>
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="field">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}<p class="help">{{ field.help_text|safe }}</p>{% endif %}
+                    {% for error in field.errors %}<p class="errorlist">{{ error }}</p>{% endfor %}
+                </div>
+            {% endfor %}
+            {% for error in form.non_field_errors %}<p class="errorlist">{{ error }}</p>{% endfor %}
+            <button type="submit">Register</button>
+        </form>
+    </main>
+</body>
+</html>

@@ -106,6 +106,24 @@ class DealerHomePageTests(TestCase):
         self.assertContains(home_response, user.username)
         self.assertContains(home_response, "Review Dealer")
 
+    def test_registration_creates_user_and_logs_them_in(self):
+        response = self.client.post(
+            "/register/",
+            {
+                "username": "new-customer",
+                "first_name": "New",
+                "last_name": "Customer",
+                "email": "new-customer@example.com",
+                "password1": "Safe-test-password-2026!",
+                "password2": "Safe-test-password-2026!",
+            },
+        )
+
+        self.assertRedirects(response, "/")
+        user = get_user_model().objects.get(username="new-customer")
+        self.assertTrue(user.check_password("Safe-test-password-2026!"))
+        self.assertEqual(self.client.session["_auth_user_id"], str(user.pk))
+
     def test_anonymous_visitors_do_not_see_review_dealer_action(self):
         response = self.client.get("/")
 

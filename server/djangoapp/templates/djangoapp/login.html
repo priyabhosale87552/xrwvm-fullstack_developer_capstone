@@ -17,6 +17,7 @@
         input { width: 100%; padding: .75rem; border: 1px solid #cbd5e1; border-radius: .4rem; font: inherit; }
         button { padding: .8rem 1rem; border: 0; border-radius: .4rem; background: #2563eb; color: white; font: inherit; font-weight: 700; cursor: pointer; }
         .error { color: #b91c1c; }
+        .signup { margin-bottom: 0; color: #64748b; }
     </style>
 </head>
 <body>
@@ -34,6 +35,7 @@
             </label>
             <button type="submit">Log in</button>
         </form>
+        <p class="signup">New here? <a href="{% url 'web-register' %}">Create an account</a></p>
     </main>
 </body>
 </html>

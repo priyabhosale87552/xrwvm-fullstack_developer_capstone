@@ -24,6 +24,7 @@ urlpatterns = [
     path("", views.home, name="home"),
     path("admin/", admin.site.urls),
     path("login/", views.web_login, name="web-login"),
+    path("register/", views.web_register, name="web-register"),
     path("logout/", views.web_logout, name="web-logout"),
     path("dealer/<int:dealer_id>/", views.dealer_detail, name="dealer-detail"),
     path("dealer/<int:dealer_id>/review/", views.post_review, name="post-review"),
