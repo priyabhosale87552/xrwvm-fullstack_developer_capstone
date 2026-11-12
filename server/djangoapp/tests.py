@@ -3,6 +3,8 @@ import json
 from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 
+from .models import Review
+
 
 class AuthenticationEndpointTests(TestCase):
     def setUp(self):
@@ -115,6 +117,47 @@ class DealerHomePageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Classic Motors")
         self.assertContains(response, "Great customer service")
+
+    def test_authenticated_user_can_open_review_form(self):
+        user = get_user_model().objects.create_user(
+            username="reviewer", password="valid-test-password"
+        )
+        self.client.force_login(user)
+
+        response = self.client.get("/dealer/1/review/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Post a Review")
+        self.assertContains(response, "Share your experience")
+
+    def test_anonymous_user_is_redirected_from_review_form(self):
+        response = self.client.get("/dealer/1/review/")
+
+        self.assertRedirects(response, "/login/?next=/dealer/1/review/")
+
+    def test_posted_review_is_saved_and_displayed_on_dealer_page(self):
+        user = get_user_model().objects.create_user(
+            username="reviewer", password="valid-test-password"
+        )
+        self.client.force_login(user)
+        response = self.client.post(
+            "/dealer/1/review/",
+            {
+                "review": "The staff were helpful and professional.",
+                "purchase": "on",
+                "purchase_date": "2025-06-04",
+                "car_make": "Audi",
+                "car_model": "A4",
+                "car_year": "2023",
+            },
+        )
+
+        self.assertRedirects(response, "/dealer/1/")
+        self.assertEqual(Review.objects.count(), 1)
+        detail_response = self.client.get("/dealer/1/")
+        self.assertContains(detail_response, "The staff were helpful and professional.")
+        self.assertContains(detail_response, "reviewer")
+        self.assertContains(detail_response, "2023 Audi A4")
 
     def test_logout_clears_session(self):
         user = get_user_model().objects.create_user(

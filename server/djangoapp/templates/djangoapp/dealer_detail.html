@@ -19,6 +19,7 @@
         .review:first-of-type { border-top: 0; }
         .review p { line-height: 1.6; }
         .sentiment { color: #047857; font-weight: 700; }
+        .review-action { display: inline-block; margin-top: 1rem; padding: .7rem 1rem; border-radius: .4rem; background: #2563eb; color: white; font-weight: 700; text-decoration: none; }
     </style>
 </head>
 <body>
@@ -30,6 +31,9 @@
             <h1>{{ dealer.short_name }}</h1>
             <p class="muted">{{ dealer.full_name }}</p>
             <address>{{ dealer.address }}<br>{{ dealer.city }}, {{ dealer.state }} {{ dealer.zip }}</address>
+            {% if user.is_authenticated %}
+                <a class="review-action" href="{% url 'post-review' dealer.id %}">Post a Review</a>
+            {% endif %}
         </section>
         <section class="panel" aria-labelledby="reviews-heading">
             <h2 id="reviews-heading">Dealer reviews</h2>
@@ -38,7 +42,7 @@
                     <strong>{{ review.name }}</strong>
                     <p>{{ review.review }}</p>
                     <p class="muted">{{ review.car_year }} {{ review.car_make }} {{ review.car_model }}</p>
-                    <span class="sentiment">{{ review.sentiment|title }} sentiment</span>
+                    {% if review.sentiment %}<span class="sentiment">{{ review.sentiment|title }} sentiment</span>{% endif %}
                 </article>
             {% empty %}
                 <p class="muted">No reviews have been posted for this dealer yet.</p>

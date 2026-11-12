@@ -5,8 +5,12 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import Http404, JsonResponse
 from django.middleware.csrf import get_token
 from django.shortcuts import redirect, render
+from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_GET, require_POST
+
+from .forms import ReviewForm
+from .models import Review
 
 DEALERS = [
     {
@@ -101,10 +105,34 @@ def dealer_detail(request, dealer_id):
     dealer = next((dealer for dealer in DEALERS if dealer["id"] == dealer_id), None)
     if dealer is None:
         raise Http404("Dealer not found.")
+    reviews = DEALER_REVIEWS.get(dealer_id, []) + list(
+        Review.objects.filter(dealership_id=dealer_id).select_related("user")
+    )
     return render(
         request,
         "djangoapp/dealer_detail.html",
-        {"dealer": dealer, "reviews": DEALER_REVIEWS.get(dealer_id, [])},
+        {"dealer": dealer, "reviews": reviews},
+    )
+
+
+@login_required(login_url="web-login")
+def post_review(request, dealer_id):
+    dealer = next((dealer for dealer in DEALERS if dealer["id"] == dealer_id), None)
+    if dealer is None:
+        raise Http404("Dealer not found.")
+
+    form = ReviewForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        review = form.save(commit=False)
+        review.dealership_id = dealer_id
+        review.user = request.user
+        review.save()
+        return redirect("dealer-detail", dealer_id=dealer_id)
+
+    return render(
+        request,
+        "djangoapp/review_form.html",
+        {"dealer": dealer, "form": form},
     )
 
 
