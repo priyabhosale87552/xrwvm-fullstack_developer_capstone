@@ -4,8 +4,64 @@ from json import JSONDecodeError
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
+from django.shortcuts import render
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_GET, require_POST
+
+DEALERS = [
+    {
+        "id": 1,
+        "city": "El Paso",
+        "state": "Texas",
+        "address": "384 Lambert Parkway",
+        "zip": "79901",
+        "short_name": "Classic Motors",
+        "full_name": "Classic Motors Dealership Inc",
+    },
+    {
+        "id": 2,
+        "city": "Austin",
+        "state": "Texas",
+        "address": "129 Capital Way",
+        "zip": "78701",
+        "short_name": "Lone Star Auto",
+        "full_name": "Lone Star Auto Group",
+    },
+    {
+        "id": 3,
+        "city": "Wichita",
+        "state": "Kansas",
+        "address": "456 Sunflower St",
+        "zip": "67202",
+        "short_name": "Jayhawk Motors",
+        "full_name": "Jayhawk Car Dealership",
+    },
+]
+
+
+def home(request):
+    states = sorted({dealer["state"] for dealer in DEALERS})
+    selected_state = request.GET.get("state", "")
+    dealers = DEALERS
+
+    if selected_state:
+        filtered_dealers = [
+            dealer for dealer in DEALERS if dealer["state"] == selected_state
+        ]
+        if filtered_dealers:
+            dealers = filtered_dealers
+        else:
+            selected_state = ""
+
+    return render(
+        request,
+        "djangoapp/home.html",
+        {
+            "dealers": dealers,
+            "states": states,
+            "selected_state": selected_state,
+        },
+    )
 
 
 @require_GET

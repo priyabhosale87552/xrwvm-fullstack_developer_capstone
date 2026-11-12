@@ -62,3 +62,29 @@ class AuthenticationEndpointTests(TestCase):
         response = self.client.get("/djangoapp/logout")
 
         self.assertEqual(response.status_code, 405)
+
+
+class DealerHomePageTests(TestCase):
+    def test_homepage_lists_all_dealers_for_anonymous_visitors(self):
+        response = self.client.get("/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Classic Motors")
+        self.assertContains(response, "Lone Star Auto")
+        self.assertContains(response, "Jayhawk Motors")
+        self.assertContains(response, "Wichita, Kansas")
+
+    def test_homepage_filters_dealers_by_state(self):
+        response = self.client.get("/", {"state": "Kansas"})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Jayhawk Motors")
+        self.assertNotContains(response, "Classic Motors")
+        self.assertNotContains(response, "Lone Star Auto")
+
+    def test_homepage_ignores_unknown_state_filter(self):
+        response = self.client.get("/", {"state": "Unknown"})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Classic Motors")
+        self.assertContains(response, "Jayhawk Motors")

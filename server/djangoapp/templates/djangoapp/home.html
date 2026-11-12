@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dealership Directory</title>
+    <style>
+        :root {
+            color-scheme: light;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #172033;
+            background: #f3f6fb;
+        }
+        * { box-sizing: border-box; }
+        body { margin: 0; }
+        header {
+            background: #142a4f;
+            color: white;
+            padding: 1.1rem max(1.5rem, calc((100% - 1120px) / 2));
+        }
+        .brand { margin: 0; font-size: 1.15rem; font-weight: 700; }
+        main { width: min(1120px, calc(100% - 2rem)); margin: 3rem auto; }
+        .intro { margin-bottom: 2rem; }
+        .eyebrow {
+            color: #2563eb;
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+        h1 { margin: .55rem 0; font-size: clamp(2rem, 5vw, 3rem); }
+        .intro p { color: #5e6b80; font-size: 1.05rem; }
+        .toolbar {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 1rem;
+            margin: 2rem 0 1.25rem;
+        }
+        .toolbar h2 { margin: 0; font-size: 1.35rem; }
+        .filter { display: flex; align-items: end; gap: .55rem; }
+        .filter label { display: grid; gap: .35rem; color: #475569; font-size: .85rem; }
+        select, button {
+            min-height: 2.6rem;
+            padding: .5rem .75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: .45rem;
+            background: white;
+            color: #172033;
+            font: inherit;
+        }
+        button { border-color: #2563eb; background: #2563eb; color: white; font-weight: 700; cursor: pointer; }
+        .dealer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
+        .dealer-card {
+            min-height: 190px;
+            padding: 1.35rem;
+            border: 1px solid #e1e7f0;
+            border-radius: .8rem;
+            background: white;
+            box-shadow: 0 8px 22px rgba(20, 42, 79, .06);
+        }
+        .dealer-card h3 { margin: .35rem 0; font-size: 1.2rem; }
+        .dealer-card .full-name { margin: 0; color: #64748b; font-size: .92rem; }
+        .dealer-card address { margin-top: 1.25rem; color: #475569; font-size: .93rem; font-style: normal; line-height: 1.55; }
+        .dealer-id { color: #2563eb; font-size: .78rem; font-weight: 700; }
+        .empty { padding: 2rem; border-radius: .8rem; background: white; color: #475569; }
+        @media (max-width: 600px) {
+            main { margin-top: 2rem; }
+            .toolbar { align-items: stretch; flex-direction: column; }
+            .filter { align-items: end; }
+            .filter label { flex: 1; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <p class="brand">Dealership Directory</p>
+    </header>
+    <main>
+        <section class="intro" aria-labelledby="page-title">
+            <span class="eyebrow">Find your next ride</span>
+            <h1 id="page-title">Explore our dealerships</h1>
+            <p>Browse trusted dealers and find a team near you.</p>
+        </section>
+        <section aria-labelledby="dealer-heading">
+            <div class="toolbar">
+                <h2 id="dealer-heading">Our dealers</h2>
+                <form class="filter" method="get" action="/">
+                    <label for="state">Filter by state
+                        <select id="state" name="state">
+                            <option value="">All states</option>
+                            {% for state in states %}
+                                <option value="{{ state }}" {% if state == selected_state %}selected{% endif %}>{{ state }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
+                    <button type="submit">Apply</button>
+                </form>
+            </div>
+            {% if dealers %}
+                <div class="dealer-grid">
+                    {% for dealer in dealers %}
+                        <article class="dealer-card">
+                            <span class="dealer-id">DEALER {{ dealer.id }}</span>
+                            <h3>{{ dealer.short_name }}</h3>
+                            <p class="full-name">{{ dealer.full_name }}</p>
+                            <address>{{ dealer.address }}<br>{{ dealer.city }}, {{ dealer.state }} {{ dealer.zip }}</address>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="empty">No dealers found for that state.</p>
+            {% endif %}
+        </section>
+    </main>
+</body>
+</html>
