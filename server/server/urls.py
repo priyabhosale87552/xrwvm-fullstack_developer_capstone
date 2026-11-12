@@ -18,6 +18,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from djangoapp import views
+
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("djangoapp/csrf", views.csrf_token, name="csrf-token"),
+    path("djangoapp/login", views.login_user, name="login"),
+    path("djangoapp/logout", views.logout_user, name="logout"),
 ]
