@@ -2,9 +2,9 @@ import json
 from json import JSONDecodeError
 
 from django.contrib.auth import authenticate, login, logout
-from django.http import JsonResponse
+from django.http import Http404, JsonResponse
 from django.middleware.csrf import get_token
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_GET, require_POST
 
@@ -38,6 +38,19 @@ DEALERS = [
     },
 ]
 
+DEALER_REVIEWS = {
+    1: [
+        {
+            "name": "Upkar Singh",
+            "review": "Great customer service and very smooth buying experience. Highly recommend!",
+            "car_make": "Audi",
+            "car_model": "A4",
+            "car_year": 2023,
+            "sentiment": "positive",
+        }
+    ]
+}
+
 
 def home(request):
     states = sorted({dealer["state"] for dealer in DEALERS})
@@ -61,6 +74,37 @@ def home(request):
             "states": states,
             "selected_state": selected_state,
         },
+    )
+
+
+def web_login(request):
+    error = ""
+    if request.method == "POST":
+        username = request.POST.get("username", "")
+        password = request.POST.get("password", "")
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect("home")
+        error = "Username or password is incorrect."
+
+    return render(request, "djangoapp/login.html", {"error": error})
+
+
+@require_POST
+def web_logout(request):
+    logout(request)
+    return redirect("home")
+
+
+def dealer_detail(request, dealer_id):
+    dealer = next((dealer for dealer in DEALERS if dealer["id"] == dealer_id), None)
+    if dealer is None:
+        raise Http404("Dealer not found.")
+    return render(
+        request,
+        "djangoapp/dealer_detail.html",
+        {"dealer": dealer, "reviews": DEALER_REVIEWS.get(dealer_id, [])},
     )
 
 

@@ -18,6 +18,7 @@
             color: white;
             padding: 1.1rem max(1.5rem, calc((100% - 1120px) / 2));
         }
+        .header-content { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
         .brand { margin: 0; font-size: 1.15rem; font-weight: 700; }
         main { width: min(1120px, calc(100% - 2rem)); margin: 3rem auto; }
         .intro { margin-bottom: 2rem; }
@@ -63,6 +64,21 @@
         .dealer-card .full-name { margin: 0; color: #64748b; font-size: .92rem; }
         .dealer-card address { margin-top: 1.25rem; color: #475569; font-size: .93rem; font-style: normal; line-height: 1.55; }
         .dealer-id { color: #2563eb; font-size: .78rem; font-weight: 700; }
+        .dealer-actions { margin-top: 1.1rem; }
+        .dealer-actions a { color: #1d4ed8; font-weight: 700; text-decoration: none; }
+        .dealer-actions a:hover { text-decoration: underline; }
+        .account { display: flex; align-items: center; gap: 1rem; }
+        .account a { color: #dbeafe; font-weight: 700; }
+        .account form { margin: 0; }
+        .account button {
+            min-height: auto;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            color: #dbeafe;
+            font-weight: 700;
+            text-decoration: underline;
+        }
         .empty { padding: 2rem; border-radius: .8rem; background: white; color: #475569; }
         @media (max-width: 600px) {
             main { margin-top: 2rem; }
@@ -74,7 +90,20 @@
 </head>
 <body>
     <header>
-        <p class="brand">Dealership Directory</p>
+        <div class="header-content">
+            <p class="brand">Dealership Directory</p>
+            <div class="account">
+                {% if user.is_authenticated %}
+                    <span>Logged in as <strong>{{ user.username }}</strong></span>
+                    <form method="post" action="{% url 'web-logout' %}">
+                        {% csrf_token %}
+                        <button type="submit">Log out</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'web-login' %}">Log in</a>
+                {% endif %}
+            </div>
+        </div>
     </header>
     <main>
         <section class="intro" aria-labelledby="page-title">
@@ -105,6 +134,11 @@
                             <h3>{{ dealer.short_name }}</h3>
                             <p class="full-name">{{ dealer.full_name }}</p>
                             <address>{{ dealer.address }}<br>{{ dealer.city }}, {{ dealer.state }} {{ dealer.zip }}</address>
+                            {% if user.is_authenticated %}
+                                <div class="dealer-actions">
+                                    <a href="{% url 'dealer-detail' dealer.id %}">Review Dealer</a>
+                                </div>
+                            {% endif %}
                         </article>
                     {% endfor %}
                 </div>

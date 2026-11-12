@@ -88,3 +88,41 @@ class DealerHomePageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Classic Motors")
         self.assertContains(response, "Jayhawk Motors")
+
+    def test_login_page_authenticates_and_displays_logged_in_user(self):
+        user = get_user_model().objects.create_user(
+            username="dealer-customer", password="valid-test-password"
+        )
+        response = self.client.post(
+            "/login/",
+            {"username": user.username, "password": "valid-test-password"},
+        )
+
+        self.assertRedirects(response, "/")
+        home_response = self.client.get("/")
+        self.assertContains(home_response, "Logged in as")
+        self.assertContains(home_response, user.username)
+        self.assertContains(home_response, "Review Dealer")
+
+    def test_anonymous_visitors_do_not_see_review_dealer_action(self):
+        response = self.client.get("/")
+
+        self.assertNotContains(response, "Review Dealer")
+
+    def test_dealer_detail_displays_dealer_and_reviews(self):
+        response = self.client.get("/dealer/1/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Classic Motors")
+        self.assertContains(response, "Great customer service")
+
+    def test_logout_clears_session(self):
+        user = get_user_model().objects.create_user(
+            username="logout-customer", password="valid-test-password"
+        )
+        self.client.force_login(user)
+
+        response = self.client.post("/logout/")
+
+        self.assertRedirects(response, "/")
+        self.assertNotIn("_auth_user_id", self.client.session)

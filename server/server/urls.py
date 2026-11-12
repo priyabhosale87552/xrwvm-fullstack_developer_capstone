@@ -23,6 +23,9 @@ from djangoapp import views
 urlpatterns = [
     path("", views.home, name="home"),
     path("admin/", admin.site.urls),
+    path("login/", views.web_login, name="web-login"),
+    path("logout/", views.web_logout, name="web-logout"),
+    path("dealer/<int:dealer_id>/", views.dealer_detail, name="dealer-detail"),
     path("djangoapp/csrf", views.csrf_token, name="csrf-token"),
     path("djangoapp/login", views.login_user, name="login"),
     path("djangoapp/logout", views.logout_user, name="logout"),

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ dealer.short_name }} | Dealership Directory</title>
+    <style>
+        :root { font-family: Arial, Helvetica, sans-serif; color: #172033; background: #f3f6fb; }
+        * { box-sizing: border-box; }
+        body { margin: 0; }
+        header { padding: 1.1rem max(1.5rem, calc((100% - 960px) / 2)); background: #142a4f; }
+        header a { color: white; font-weight: 700; text-decoration: none; }
+        main { width: min(960px, calc(100% - 2rem)); margin: 3rem auto; }
+        .panel { margin-bottom: 1.2rem; padding: 1.5rem; border: 1px solid #e1e7f0; border-radius: .8rem; background: white; box-shadow: 0 8px 22px rgba(20, 42, 79, .06); }
+        h1, h2 { margin-top: 0; }
+        .muted { color: #64748b; }
+        address { font-style: normal; line-height: 1.6; }
+        .review { padding: 1rem 0; border-top: 1px solid #e2e8f0; }
+        .review:first-of-type { border-top: 0; }
+        .review p { line-height: 1.6; }
+        .sentiment { color: #047857; font-weight: 700; }
+    </style>
+</head>
+<body>
+    <header><a href="{% url 'home' %}">Dealership Directory</a></header>
+    <main>
+        <p><a href="{% url 'home' %}">← Back to dealers</a></p>
+        <section class="panel">
+            <p class="muted">Dealer {{ dealer.id }}</p>
+            <h1>{{ dealer.short_name }}</h1>
+            <p class="muted">{{ dealer.full_name }}</p>
+            <address>{{ dealer.address }}<br>{{ dealer.city }}, {{ dealer.state }} {{ dealer.zip }}</address>
+        </section>
+        <section class="panel" aria-labelledby="reviews-heading">
+            <h2 id="reviews-heading">Dealer reviews</h2>
+            {% for review in reviews %}
+                <article class="review">
+                    <strong>{{ review.name }}</strong>
+                    <p>{{ review.review }}</p>
+                    <p class="muted">{{ review.car_year }} {{ review.car_make }} {{ review.car_model }}</p>
+                    <span class="sentiment">{{ review.sentiment|title }} sentiment</span>
+                </article>
+            {% empty %}
+                <p class="muted">No reviews have been posted for this dealer yet.</p>
+            {% endfor %}
+        </section>
+    </main>
+</body>
+</html>
